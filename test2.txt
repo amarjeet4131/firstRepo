@@ -1,0 +1,118 @@
+++++++Excel code++++++++++++++++
+Sheet sheet=wb.getSheetAt(0);  
+//wb.get//getting the XSSFSheet object at given index 
+Row row=sheet.getRow(vRow); //returns the logical row  
+
+Cell cell=row.getCell(vColumn); //getting the cell representing the given column  
+value=cell.getStringCellValue() 
+
+
+case Cell.CELL_TYPE_STRING:    //field that represents string cell type  
+System.out.print(cell.getStringCellValue() + "\t\t\t");  
+break;  
+case Cell.CELL_TYPE_NUMERIC:    //field that represents number cell type  
+System.out.print(cell.getNumericCellValue() + "\t\t\t"); 
+-------
+------to get coloums----------------------
+HSSFSheet sheet = filename.getSheetAt(0);
+
+    //we will search for column index containing string "Your Column Name" in the row 0 (which is first row of a worksheet
+    String columnWanted = "Your Column Name";
+    Integer columnNo = null;
+    //output all not null values to the list
+    List<Cell> cells = new ArrayList<Cell>();
+
+    Row firstRow = sheet.getRow(0);
+
+    for(Cell cell:firstRow){
+        if (cell.getStringCellValue().equals(columnWanted)){
+            columnNo = cell.getColumnIndex();
+//cell1.getStringCellValue() + "\t cell coumn index"+cell1.getColumnIndex()
+        }
+    }
+
+
+    if (columnNo != null){
+    for (Row row : sheet) {
+       Cell c = row.getCell(columnNo);
+       if (c == null || c.getCellType() == Cell.CELL_TYPE_BLANK) {
+          // Nothing in the cell in this row, skip it
+       } else {
+          cells.add(c);
+       }
+    }
+    }else{
+        System.out.println("could not find column " + columnWanted + " in first row of " + fileIn.toString());
+    }
+-----------------------
+Create an object of HSSFWorkBook by opening excel file using FileInputStream
+Get a Sheet from workbook by calling getSheet() method, you can pass name or sheet index
+Get a Row from that sheet by calling getRow() method, you can pass index
+Get a Cell by calling getCell() method
+Get the Cell type by calling getCellType() method.
+Depending upon Cell type, call getStringCellValue(), getNumericCellValue() or getDateCellValue() method to get value.
+Close the workbook object by calling close() method
+
+
+Read more: https://javarevisited.blogspot.com/2015/06/how-to-read-write-excel-file-java-poi-example.html#ixzz6DFXQD749
+------
+======sqlite=================
+String url = "jdbc:sqlite:C://sqlite/SSSIT.db";  
+        Connection conn = null;  
+        try {  
+            conn = DriverManager.getConnection(url);  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+===================
+String sql = "SELECT * FROM employees";  
+          
+        try {  
+            Connection conn = this.connect();  
+            Statement stmt  = conn.createStatement();  
+            ResultSet rs    = stmt.executeQuery(sql);  
+              
+            // loop through the result set  
+            while (rs.next()) {  
+                System.out.println(rs.getInt("id") +  "\t" +   
+                                   rs.getString("name") + "\t" +  
+                                   rs.getDouble("capacity"));  w
+            }  
+        } catch (SQLException e) {  
+            System.out.println(e.getMessage());  
+        }  
+
+====Javascript=
+   //Perform Click on LOGIN button using JavascriptExecutor		
+        js.executeScript("arguments[0].click();", button);
+ JavascriptExecutor js = (JavascriptExecutor)driver;
+	 getJavascriptExecutorFacade().executeScript("IPGB2_LOGIN_JSCLK();");	
+
+ $('#linkid').click();
+document.getElementById('MyElementsId').click();
+----iframe--------------
+while(driver.switchTo().parentFrame()!=null) {
+			List<WebElement> we=driver.findElements(By.tagName("iframe"));
+			
+			for(int i=0;i<we.size();i++) {
+				System.out.println(i+we.get(i).getAttribute("id"));
+			}	
+		}//0IPGB2_INPLACEDLG_
+--------------------
+https://serenity-bdd.github.io/theserenitybook/latest/serenity-screenplay.html
+http://thucydides.info/docs/serenity-staging/#_working_with_asynchronous_pages
+---session-----
+Serenity.setSessionVariable("User Name").to("Jane");
+String currentUserName = Serenity.sessionVariableCalled("User Name");
+-----
+------javascript for right click-------------
+var element = document.getElementById('yourElement');
+if (window.CustomEvent) {
+    element.dispatchEvent(new CustomEvent('contextmenu'));
+} else if (document.createEvent) {
+    var ev = document.createEvent('HTMLEvents');
+    ev.initEvent('contextmenu', true, false);
+    element.dispatchEvent(ev);
+} else { // Internet Explorer
+    element.fireEvent('oncontextmenu');
+}
