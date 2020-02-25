@@ -1,0 +1,732 @@
+package rnd;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+public class Learn1 {
+
+	public String GetDataSearched(String path, String CCY, int vColumn) {
+		String value = null; // variable for storing the cell value
+		Workbook wb = null; // initialize Workbook null
+		try {
+			// reading data from a file in the form of bytes
+			FileInputStream fis = new FileInputStream(path);
+			// constructs an XSSFWorkbook object, by buffering the whole stream into the
+			// memory
+			wb = new XSSFWorkbook(fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Sheet sheet = wb.getSheetAt(1);
+		// wb.get//getting the XSSFSheet object at given index
+		int LastRow = sheet.getLastRowNum();
+		// Row row = sheet.getRow(vRow); // returns the logical row
+
+		// System.out.println("row data= "+row.toString());
+		for (int i = 0; i < LastRow; i++) {
+			Row row = sheet.getRow(i);
+
+			Cell cell1 = row.getCell(0);
+			Cell cell2 = row.getCell(1);
+			if (cell1.getStringCellValue().equalsIgnoreCase(CCY)) {
+				value = String.valueOf(cell2.getNumericCellValue());
+				break;
+			}
+
+			System.out.println();
+		}
+
+		System.out.println(CCY + " fx value = " + value);
+		return value; // returns the cell value
+	}
+
+	public String GetFXRate(String path, String CCY, String datstr) {
+		String value = null; // variable for storing the cell value
+		Workbook wb = null; // initialize Workbook null
+		// String [] headers= new String[]{"MAJORCCY","MINORCCY","MID","BUSINESS_DATE"
+		// };
+		int indexMAJORCCY = 0;
+		int indexMINORCCY = 0;
+		int indexMID = 0;
+		int indexBUSINESS_DATE = 0;
+
+		try {
+
+			FileInputStream fis = new FileInputStream(path);
+			// constructs an XSSFWorkbook object, by buffering the whole stream into the
+			// memory
+
+			wb = new XSSFWorkbook(fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Sheet sheet = wb.getSheetAt(0);
+		// wb.get//getting the XSSFSheet object at given index
+		int LastRow = sheet.getLastRowNum();
+		// Row row = sheet.getRow(vRow); // returns the logical row
+		int majorCCY = 0;
+		// System.out.println("row data= "+row.toString());
+		Row rowh = sheet.getRow(0);
+		for (Cell cellh : rowh) {
+
+			if (cellh.toString().equalsIgnoreCase("MAJORCCY"))
+				indexMAJORCCY = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("MINORCCY"))
+				indexMINORCCY = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("MID"))
+				indexMID = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("BUSINESS_DATE"))
+				indexBUSINESS_DATE = cellh.getColumnIndex();
+
+		}
+		;
+		/* Head row =MAJORCCY,MINORCCY,BID,MID,ASK,BUSINESS_DATE */
+		System.out.println("Get index value " + rowh.getCell(majorCCY));
+
+		for (int i = 1; i < LastRow; i++) {
+
+			Row row = sheet.getRow(i);
+
+			Cell cell1 = row.getCell(indexMAJORCCY);
+			Cell cell2 = row.getCell(indexMINORCCY);
+			boolean checkdate = row.getCell(indexBUSINESS_DATE).toString().equalsIgnoreCase(datstr);
+			if (cell1.toString().equalsIgnoreCase(CCY) && checkdate) {
+				value = row.getCell(indexMID).toString(); // to take MID value from feed file
+				break;
+			} else if (cell2.toString().equalsIgnoreCase(CCY) && checkdate) {
+				value = row.getCell(indexMID).toString();
+				break;
+			}
+
+		}
+
+		System.out.println(CCY + " fx value " + "on " + datstr + " = " + value);
+		return value; // returns the cell value
+	}
+
+	public String GetABRDATA(String path, String Entity, String Broker, String subProduct, String CurrPair,
+			int duration) {
+		String value = null; // variable for storing the cell value
+		Workbook wb = null; // initialize Workbook null
+		// String [] headers= new String[]{"MAJORCCY","MINORCCY","MID","BUSINESS_DATE"
+		// };
+		String strABR = null;
+		int idxEntity = 0;
+		int idxBroker = 0;
+		int idxSub_product = 0;// Sub product
+		int idxCCY_pair = 0;// CCY Pair
+		int idxBand1 = 0;
+		int idxRate_1 = 0;// Rate 1
+		int idxBand_2 = 0;
+		int idxRate_2 = 0;
+		int idxBand_3 = 0;
+		int idxRate_3 = 0;
+		int idxBand_4 = 0;
+		int idxRate_4 = 0;
+		int idxBand_5 = 0;
+		int idxRate_5 = 0;
+		int idxBand_6 = 0;
+		int idxRate_6 = 0;
+		int idxBand_7 = 0;
+		int idxRate_7 = 0;
+		int idxBand_8 = 0;
+		int idxRate_8 = 0;
+
+		try {
+
+			FileInputStream fis = new FileInputStream(path);
+			// constructs an XSSFWorkbook object, by buffering the whole stream into the
+			// memory
+
+			wb = new XSSFWorkbook(fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Sheet sheet = wb.getSheetAt(0);
+		// wb.get//getting the XSSFSheet object at given index
+		int LastRow = sheet.getLastRowNum();
+		// Row row = sheet.getRow(vRow); // returns the logical row
+		int majorCCY = 0;
+		// System.out.println("row data= "+row.toString());
+		Row rowh = sheet.getRow(0);
+		for (Cell cellh : rowh) {
+
+			if (cellh.toString().equalsIgnoreCase("Entity"))
+				idxEntity = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Broker"))
+				idxBroker = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Sub product"))
+				idxSub_product = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("CCY pair"))
+				idxCCY_pair = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band1"))
+				idxBand1 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 1"))
+				idxRate_1 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 2"))
+				idxBand_2 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 2"))
+				idxRate_2 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 3"))
+				idxBand_3 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 3"))
+				idxRate_3 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 4"))
+				idxBand_4 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 4"))
+				idxRate_4 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 5"))
+				idxBand_5 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 5"))
+				idxRate_5 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 6"))
+				idxBand_6 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 6"))
+				idxRate_6 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 7"))
+				idxBand_7 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 7"))
+				idxRate_7 = cellh.getColumnIndex();
+
+		}
+		;
+		/* Head row =MAJORCCY,MINORCCY,BID,MID,ASK,BUSINESS_DATE */
+		System.out.println("Get index value " + rowh.getCell(idxEntity) + "-" + rowh.getCell(idxBroker) + "-"
+				+ rowh.getCell(idxSub_product) + "-" + rowh.getCell(idxCCY_pair) + "-" + rowh.getCell(idxBand1) + "-"
+				+ rowh.getCell(idxRate_1) + "-");
+
+		for (int i = 1; i < LastRow; i++) {
+
+			Row row = sheet.getRow(i);
+
+			// String Entity, String Broker,String subProduct, String CurrPair,int duration
+			// int idxSub_product=0;//Sub product
+			// int idxCCY_pair=0;//CCY Pair
+			// int idxBand1=0;
+			// int idxRate_1=0;//Rate 1
+			// xband.substring(xband.indexOf("<=")+2)
+			boolean checkEntity = row.getCell(idxEntity).toString().equalsIgnoreCase(Entity);
+			boolean checkBroker = row.getCell(idxBroker).toString().equalsIgnoreCase(Broker);
+			boolean checksubProduct = row.getCell(idxSub_product).toString().equalsIgnoreCase(subProduct);
+			boolean checkCCY_pair = row.getCell(idxCCY_pair).toString().equalsIgnoreCase(CurrPair);
+
+			if (checkEntity && checkBroker && checksubProduct && checkCCY_pair) {
+				String band1 = row.getCell(idxBand1).toString();
+				String bandvalues[] = band1.split("=");
+
+				if (bandvalues.length == 1) {
+					// band1.substring(band1.indexOf("<=")+2);
+					strABR = row.getCell(idxRate_1).toString();
+				} else {
+					String band1limit = bandvalues.length == 3 ? bandvalues[2] : bandvalues[1];
+
+					if (duration <= Integer.valueOf(band1limit)) {
+						strABR = row.getCell(idxRate_1).toString();
+						break;
+					}
+
+					else {
+						String band2 = row.getCell(idxBand_2).toString();
+						String band2limit = band2.split("=")[2];
+						if (duration <= Integer.valueOf(band2limit)) {
+							strABR = row.getCell(idxRate_2).toString();
+							break;
+						} else {
+							String band3 = row.getCell(idxBand_3).toString();
+							String band3limit = band3.split("=")[2];
+							if (duration <= Integer.valueOf(band3limit)) {
+								strABR = row.getCell(idxRate_3).toString();
+								break;
+							} else {
+								String band4 = row.getCell(idxBand_4).toString();
+								String band4limit = band4.split("=")[2];
+								if (duration <= Integer.valueOf(band4limit)) {
+									strABR = row.getCell(idxRate_4).toString();
+									break;
+								} else {
+									String band5 = row.getCell(idxBand_5).toString();
+									String band5limit = band5.split("=")[2];
+									if (duration <= Integer.valueOf(band5limit)) {
+										strABR = row.getCell(idxRate_5).toString();
+										break;
+									} else {
+										String band6 = row.getCell(idxBand_6).toString();
+										String band6limit = band6.split("=")[1];
+										if (duration <= Integer.valueOf(band6limit)) {
+											strABR = row.getCell(idxRate_6).toString();
+											break;
+										} else {
+											strABR = row.getCell(idxRate_7).toString();
+											break;
+
+										}
+									}
+
+								}
+							}
+
+						}
+
+					}
+				}
+
+////
+			}
+
+		}
+		// System.out.println(CCY + " fx value " + "on " + datstr + " = " + value);
+		return strABR; // returns the cell value
+	}
+
+	public Map<String, List<Map<String, String>>> GetABRDATADetails(String path, String Entity, String Broker,
+			String subProduct, String CurrPair, int duration) {
+
+		Map<String, Map<String, String>> ABRRecords = new HashMap<String, Map<String, String>>();
+		Map<String, List<Map<String, String>>> ABRRecords1 = new HashMap<String, List<Map<String, String>>>();
+
+		Map<String, String> ABRrows = new HashMap<String, String>();
+
+		String value = null; // variable for storing the cell value
+		Workbook wb = null; // initialize Workbook null
+		//  String [] headers= new String[]{"MAJORCCY","MINORCCY","MID","BUSINESS_DATE"
+		// };
+		String strABR = null;
+		int idxEntity = 0;
+		int idxBroker = 0;
+		int idxSub_product = 0;// Sub product
+		int idxCCY_pair = 0;// CCY Pair
+		int idxBand1 = 0;
+		int idxRate_1 = 0;// Rate 1
+		int idxBand_2 = 0;
+		int idxRate_2 = 0;
+		int idxBand_3 = 0;
+		int idxRate_3 = 0;
+		int idxBand_4 = 0;
+		int idxRate_4 = 0;
+		int idxBand_5 = 0;
+		int idxRate_5 = 0;
+		int idxBand_6 = 0;
+		int idxRate_6 = 0;
+		int idxBand_7 = 0;
+		int idxRate_7 = 0;
+		int idxBand_8 = 0;
+		int idxRate_8 = 0;
+
+		try {
+
+			FileInputStream fis = new FileInputStream(path);
+			// constructs an XSSFWorkbook object, by buffering the whole stream into the
+			// memory
+
+			wb = new XSSFWorkbook(fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Sheet sheet = wb.getSheetAt(0);
+		// wb.get//getting the XSSFSheet object at given index
+		int LastRow = sheet.getLastRowNum();
+		// Row row = sheet.getRow(vRow); // returns the logical row
+		int majorCCY = 0;
+		// System.out.println("row data= "+row.toString());
+		Row rowh = sheet.getRow(0);
+		for (Cell cellh : rowh) {
+
+			if (cellh.toString().equalsIgnoreCase("Entity"))
+				idxEntity = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Broker"))
+				idxBroker = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Sub product"))
+				idxSub_product = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("CCY pair"))
+				idxCCY_pair = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band1"))
+				idxBand1 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 1"))
+				idxRate_1 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 2"))
+				idxBand_2 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 2"))
+				idxRate_2 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 3"))
+				idxBand_3 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 3"))
+				idxRate_3 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 4"))
+				idxBand_4 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 4"))
+				idxRate_4 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 5"))
+				idxBand_5 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 5"))
+				idxRate_5 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 6"))
+				idxBand_6 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 6"))
+				idxRate_6 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 7"))
+				idxBand_7 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 7"))
+				idxRate_7 = cellh.getColumnIndex();
+
+		}
+		;
+		/* Head row =MAJORCCY,MINORCCY,BID,MID,ASK,BUSINESS_DATE */
+		System.out.println("Get index value " + rowh.getCell(idxEntity) + "-" + rowh.getCell(idxBroker) + "-"
+				+ rowh.getCell(idxSub_product) + "-" + rowh.getCell(idxCCY_pair) + "-" + rowh.getCell(idxBand1) + "-"
+				+ rowh.getCell(idxRate_1) + "-");
+
+		for (int i = 1; i < LastRow; i++) {
+
+			Map<String, String> tempMap = new HashMap<String, String>();
+			List<Map<String, String>> tempList = new ArrayList<Map<String, String>>();
+			Row row = sheet.getRow(i);
+
+			// String Entity, String Broker,String subProduct, String CurrPair,int duration
+			// int idxSub_product=0;//Sub product
+			// int idxCCY_pair=0;//CCY Pair
+			// int idxBand1=0;
+			// int idxRate_1=0;//Rate 1
+			// xband.substring(xband.indexOf("<=")+2)
+			boolean checkEntity = row.getCell(idxEntity).toString().equalsIgnoreCase(Entity);
+
+			tempMap.put("Entity", row.getCell(idxEntity).toString());
+			tempMap.put("Broker", row.getCell(idxBroker).toString());
+			tempMap.put("Sub product", row.getCell(idxSub_product).toString());
+			tempMap.put("CCY pair", row.getCell(idxCCY_pair).toString());
+			tempMap.put("Band1", row.getCell(idxBand1).toString());
+			tempMap.put("Rate 1", row.getCell(idxRate_1).toString());
+			tempMap.put("Band 2", row.getCell(idxBand_2).toString());
+			tempMap.put("Rate 2", row.getCell(idxRate_2).toString());
+			tempMap.put("Band 3", row.getCell(idxBand_3).toString());
+			tempMap.put("Rate 3", row.getCell(idxRate_3).toString());
+			tempMap.put("Band 4", row.getCell(idxBand_4).toString());
+			tempMap.put("Rate 4", row.getCell(idxRate_4).toString());
+			tempMap.put("Band 5", row.getCell(idxBand_5).toString());
+			tempMap.put("Rate 5", row.getCell(idxRate_5).toString());
+			tempMap.put("Band 6", row.getCell(idxBand_6).toString());
+			tempMap.put("Rate 6", row.getCell(idxRate_6).toString());
+			tempMap.put("Band 7", row.getCell(idxBand_7).toString());
+			tempMap.put("Rate 7", row.getCell(idxRate_7).toString());
+
+			tempList.add(tempMap);
+			ABRRecords1.put("Row" + i, tempList);
+
+		}
+		// System.out.println(CCY + " fx value " + "on " + datstr + " = " + value);
+		return ABRRecords1; // returns the cell value
+		/*
+		 * public List<Map<String, String>> getExcelList(XSSFWorkbook wb,String
+		 * headerData){
+		 * 
+		 * List<Map<String,String>> tempList = new ArrayList<Map<String,String>>();
+		 * Map<Integer,String> header = new HashMap<Integer,String>(); String[] arg
+		 * =headerData.split(",");
+		 * 
+		 * for(int i=0;i<arg.length; i++){ if(!arg[i].equals("")) header.put(i, arg[i]);
+		 * }
+		 * 
+		 * for( Row row : wb.getSheetAt(0) ) {
+		 * 
+		 * Map<String,String> tempMap = new HashMap<String,String>(); for(Cell cell
+		 * :row){ if(header.get(cell.getColumnIndex()) != null){ switch(
+		 * cell.getCellType()) { case Cell.CELL_TYPE_STRING : tempMap.put(
+		 * header.get(cell.getColumnIndex()),cell.getRichStringCellValue().getString());
+		 * break; case Cell.CELL_TYPE_NUMERIC :
+		 * if(org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted(cell))
+		 * tempMap.put(
+		 * header.get(cell.getColumnIndex()),cell.getDateCellValue().toString()); else
+		 * tempMap.put( header.get(cell.getColumnIndex()),Integer.toString((int)cell.
+		 * getNumericCellValue())); break; case Cell.CELL_TYPE_FORMULA : tempMap.put(
+		 * header.get(cell.getColumnIndex()),cell.getCellFormula()); break; } } }
+		 * 
+		 * tempList.add(tempMap); }
+		 * 
+		 * return tempList; }
+		 */
+	}
+//end GetABRDATADetails
+
+	public JSONArray GetABRDATAtoJson(String path, String Entity, String Broker, String subProduct, String CurrPair,
+			int duration) {
+
+		Map<String, Map<String, String>> ABRRecords = new HashMap<String, Map<String, String>>();
+		Map<String, List<Map<String, String>>> ABRRecords1 = new HashMap<String, List<Map<String, String>>>();
+
+		JSONObject columnNameValues = new JSONObject();
+		JSONObject RowRecords = new JSONObject();
+		// sampleObject.put("name", "Stackabuser");
+		JSONArray RowRecordsList = new JSONArray();
+
+		Map<String, String> ABRrows = new HashMap<String, String>();
+
+		String value = null; // variable for storing the cell value
+		Workbook wb = null; // initialize Workbook null
+		// String [] headers= new String[]{"MAJORCCY","MINORCCY","MID","BUSINESS_DATE"
+		// };
+		String strABR = null;
+		int idxEntity = 0;
+		int idxBroker = 0;
+		int idxSub_product = 0;// Sub product
+		int idxCCY_pair = 0;// CCY Pair
+		int idxBand1 = 0;
+		int idxRate_1 = 0;// Rate 1
+		int idxBand_2 = 0;
+		int idxRate_2 = 0;
+		int idxBand_3 = 0;
+		int idxRate_3 = 0;
+		int idxBand_4 = 0;
+		int idxRate_4 = 0;
+		int idxBand_5 = 0;
+		int idxRate_5 = 0;
+		int idxBand_6 = 0;
+		int idxRate_6 = 0;
+		int idxBand_7 = 0;
+		int idxRate_7 = 0;
+		int idxBand_8 = 0;
+		int idxRate_8 = 0;
+
+		try {
+
+			FileInputStream fis = new FileInputStream(path);
+			// constructs an XSSFWorkbook object, by buffering the whole stream into the
+			// memory
+
+			wb = new XSSFWorkbook(fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Sheet sheet = wb.getSheetAt(0);
+		// wb.get//getting the XSSFSheet object at given index
+		int LastRow = sheet.getLastRowNum();
+		// Row row = sheet.getRow(vRow); // returns the logical row
+		int majorCCY = 0;
+		// System.out.println("row data= "+row.toString());
+		Row rowh = sheet.getRow(0);
+		for (Cell cellh : rowh) {
+
+			if (cellh.toString().equalsIgnoreCase("Entity"))
+				idxEntity = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Broker"))
+				idxBroker = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Sub product"))
+				idxSub_product = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("CCY pair"))
+				idxCCY_pair = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band1"))
+				idxBand1 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 1"))
+				idxRate_1 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 2"))
+				idxBand_2 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 2"))
+				idxRate_2 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 3"))
+				idxBand_3 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 3"))
+				idxRate_3 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 4"))
+				idxBand_4 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 4"))
+				idxRate_4 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 5"))
+				idxBand_5 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 5"))
+				idxRate_5 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 6"))
+				idxBand_6 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 6"))
+				idxRate_6 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Band 7"))
+				idxBand_7 = cellh.getColumnIndex();
+			if (cellh.toString().equalsIgnoreCase("Rate 7"))
+				idxRate_7 = cellh.getColumnIndex();
+
+		}
+		;
+		/* Head row =MAJORCCY,MINORCCY,BID,MID,ASK,BUSINESS_DATE */
+		System.out.println("Get index value " + rowh.getCell(idxEntity) + "-" + rowh.getCell(idxBroker) + "-"
+				+ rowh.getCell(idxSub_product) + "-" + rowh.getCell(idxCCY_pair) + "-" + rowh.getCell(idxBand1) + "-"
+				+ rowh.getCell(idxRate_1) + "-");
+
+		for (int i = 1; i < LastRow; i++) {
+
+			Map<String, String> tempMap = new HashMap<String, String>();
+			List<Map<String, String>> tempList = new ArrayList<Map<String, String>>();
+			Row row = sheet.getRow(i);
+
+			// String Entity, String Broker,String subProduct, String CurrPair,int duration
+			// int idxSub_product=0;//Sub product
+			// int idxCCY_pair=0;//CCY Pair
+			// int idxBand1=0;
+			// int idxRate_1=0;//Rate 1
+			// xband.substring(xband.indexOf("<=")+2)
+			boolean checkEntity = row.getCell(idxEntity).toString().equalsIgnoreCase(Entity);
+
+			columnNameValues.put("Entity", row.getCell(idxEntity).toString());
+			columnNameValues.put("Broker", row.getCell(idxBroker).toString());
+			columnNameValues.put("Sub product", row.getCell(idxSub_product).toString());
+			columnNameValues.put("CCY pair", row.getCell(idxCCY_pair).toString());
+			columnNameValues.put("Band1", row.getCell(idxBand1).toString());
+			columnNameValues.put("Rate 1", row.getCell(idxRate_1).toString());
+			columnNameValues.put("Band 2", row.getCell(idxBand_2).toString());
+			columnNameValues.put("Rate 2", row.getCell(idxRate_2).toString());
+			columnNameValues.put("Band 3", row.getCell(idxBand_3).toString());
+			columnNameValues.put("Rate 3", row.getCell(idxRate_3).toString());
+			columnNameValues.put("Band 4", row.getCell(idxBand_4).toString());
+			columnNameValues.put("Rate 4", row.getCell(idxRate_4).toString());
+			columnNameValues.put("Band 5", row.getCell(idxBand_5).toString());
+			columnNameValues.put("Rate 5", row.getCell(idxRate_5).toString());
+			columnNameValues.put("Band 6", row.getCell(idxBand_6).toString());
+			columnNameValues.put("Rate 6", row.getCell(idxRate_6).toString());
+			columnNameValues.put("Band 7", row.getCell(idxBand_7).toString());
+			columnNameValues.put("Rate 7", row.getCell(idxRate_7).toString());
+
+			// tempList.add(tempMap);
+
+			RowRecords.put("Row" + i, columnNameValues);
+			RowRecordsList.add(RowRecords);
+
+		}
+		// System.out.println(CCY + " fx value " + "on " + datstr + " = " + value);
+		// return ABRRecords1; // returns the cell value
+
+		try (FileWriter file = new FileWriter("ABRData.json")) {
+
+			file.write(RowRecordsList.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return RowRecordsList;
+	}
+
+//end GetABRDATAtoJson
+	public JSONArray GetJsonDatafromExcel(String path, String Headers, int rowNos) {
+
+		Map<Integer, String> headerindex = new HashMap<Integer, String>();
+		String[] arg = Headers.split(",");
+
+		Workbook wb = null; // initialize Workbook null
+		
+		try {
+
+			FileInputStream fis = new FileInputStream(path);
+			// constructs an XSSFWorkbook object, by buffering the whole stream into the
+			// memory
+
+			wb = new XSSFWorkbook(fis);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Sheet sheet = wb.getSheetAt(0);
+		// wb.get//getting the XSSFSheet object at given index
+		int LastRow = rowNos == 0 ? sheet.getLastRowNum() : rowNos;
+		// Row row = sheet.getRow(vRow); // returns the logical row
+
+		// System.out.println("row data= "+row.toString());
+		Row rowh = sheet.getRow(0);
+		for (Cell cellh : rowh) {
+			for (int i = 0; i < arg.length; i++) {
+				if (arg[i].equalsIgnoreCase(cellh.toString()))
+					headerindex.put(cellh.getColumnIndex(), arg[i]);
+			}
+
+		}
+		// ------
+		System.out.println("Header with index=" + headerindex);
+		// List<Map<String,String>> tempList = new ArrayList<Map<String,String>>();
+		JSONArray RowRecordsList = new JSONArray();
+
+		for (int i = 1; i <= LastRow; i++) {
+			// for( Row row : wb.getSheetAt(0) ) {
+			Row row = sheet.getRow(i);
+			// Map<String,String> tempMap = new HashMap<String,String>();
+			JSONObject columnNameValues = new JSONObject();
+			for (Cell cell : row) {
+				if (headerindex.get(cell.getColumnIndex()) != null && headerindex.get(cell.getColumnIndex()) != "") {
+
+					columnNameValues.put(headerindex.get(cell.getColumnIndex()), cell.toString());
+
+				}
+			}
+
+			RowRecordsList.add(columnNameValues);
+		}
+
+		try (FileWriter file = new FileWriter("ExcelData.json")) {
+
+			file.write(RowRecordsList.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return RowRecordsList;
+
+	}
+	// end GetABRDATAtoJson
+
+public String getdatafromDB(String sqlqueries) {
+	
+	String url = "jdbc:sqlite:D://Meri//Meri.db";  
+    Connection conn = null;  
+    try {  
+        conn = DriverManager.getConnection(url);  
+    } catch (SQLException e) {  
+        System.out.println(e.getMessage());  
+    } 
+	String sql = "select * from fxdata where UTI_REFERENCE=\"SWAP0021DH2003420018\"";
+    
+    try {  
+        //Connection conn = this.connect();  
+        Statement stmt  = conn.createStatement();  
+        ResultSet rs    = stmt.executeQuery(sql);  
+          
+        // loop through the result set  
+        while (rs.next()) {  
+            System.out.println(rs.getString(5) +  "\t" +   
+                               rs.getString(6) + "\t" +  
+                               rs.getString(7));  
+           
+        }  
+    } catch (SQLException e) {  
+        System.out.println(e.getMessage());  
+    }
+	return "result";  
+	
+}
+
+}
