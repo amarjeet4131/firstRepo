@@ -1,0 +1,804 @@
+https://www.python.org/shell/
+
+https://www.onlinegdb.com/online_python_interpreter
+
+https://repl.it/languages/python3
+
+https://www.tutorialspoint.com/execute_python3_online.php
+
+https://rextester.com/l/python3_online_compiler
+
+https://trinket.io/python3
+
+---referece docs---
+https://docs.python.org/3/tutorial/index.html
+--333333333333333
+hello hello right my name equal to crazy sing stop
+append
+insert
+sort
+pop
+clear
+reverse
+index
+count
+--
+len(list)
+max(list)
+min(list)
+list(seq)
+sum(list)
+-----
+int() / float() / eval()
+input()
+min() / max()
+abs()
+type()
+len()
+round()
+range()
+----
+Importing from modules
+
+We can import the definitions inside a module to another module or the interactive interpreter in Python.
+We use the import keyword to do this.
+import math
+We can rename modules using as
+We can import specific names from a module without importing the module as a whole using from.
+---------
+How to Open a file?
+
+Python has a built-in function open() to open a file. This function returns a file object.
+We can specify the mode while opening a file. In mode, we specify whether we want to read 'r', write 'w' or append 'a' to the file. We also specify if we want to open the file in text mode or binary mode.
+
+We can also use with statement instead of open() and close():
+with open(‘filename.txt’, ‘w’) as fileObject:
+
+------
+Reading from a file
+
+Open the file using ‘r’ mode. We get a fileObject that can be used to read from the file.
+We can read a file line-by-line using a for loop. This is both efficient and fast.
+>>> for line in f:
+...     print(line, end = '')
+Alternately, we can use readline() method to read individual lines of a file. This method reads a file till the newline, including the newline character.
+
+
+----
+Writing to a file
+
+Open the file using ‘w’ mode. We get a fileObject that can be used to write strings into the file.
+
+fileObject.write(string)
+fileObject.writelines(sequence)
+--------test-2-dec-21--------
+---1---
+filenames = ["program.c", "stdio.hpp", "sample.hpp", "a.out", "math.hpp", "hpp.out"]
+# Generate newfilenames as a list containing the new filenames
+# using as many lines of code as your chosen method requires.
+newfilenames=[]
+def updatename(filenamelist):
+    for filename in filenamelist:
+     if(filename.endswith(".hpp")):
+        newfilenames.append(filename.replace(".hpp",".h"))
+     else:
+        newfilenames.append(filename)
+    return newfilenames
+newfilenames=updatename(filenames)
+#newfilenames=[f for f in filenames if f.endswith(".hpp") 
+
+print(newfilenames) 
+# Should be ["program.c", "stdio.h", "sample.h", "a.out", "math.h", "hpp.out"]
+--2--
+def pig_latin(text):
+  say = ""
+  # Separate the text into words
+  words = text.split(" ")
+  #print(words)
+  for word in words:
+    # Create the pig latin word and add it to the list
+    say=say+word[1:]+word[0]+"ay "
+    #print(say)
+    #say=say+" "
+    #print("ct="+say)
+    # Turn the list back into a phrase
+  return say
+		
+print(pig_latin("hello how are you")) # Should be "ellohay owhay reaay ouyay"
+print(pig_latin("programming in python is fun")) # Should be "rogrammingpay niay ythonpay 
+---3----
+def octal_to_string(octal):
+    result = ""
+    value_letters = [(4,"r"),(2,"w"),(1,"x")]
+    # Iterate over each of the digits in octal
+    for n in [int(n) for n in str(octal)]:
+        # Check for each of the permissions values
+        for value, letter in value_letters:
+            if n >= value:
+                result += ___
+                ___ -= value
+            else:
+                ___
+    return result
+    
+print(octal_to_string(755)) # Should be rwxr-xr-x
+print(octal_to_string(644)) # Should be rw-r--r--
+print(octal_to_string(750)) # Should be rwxr-x---
+print(octal_to_string(600)) # Should be rw-------
+
+++++++++++++++++++++++++++++++
+def octal_to_string(octal):
+    result = ""
+    value_letters = [(4, "r"), (2, "w"), (1, "x")]
+    for perm in [int(n) for n in str(octal)]:
+        for value, letter in value_letters:
+            if perm >= value:
+                result += letter
+                perm -= value
+            else:
+                result += "-"
+    return result
+++++++++++++++++++++++++++++++++
+-----4-----
+def group_list(group, users):
+  members = ", ".join(users)
+  return group + ": " + members
+
+print(group_list("Marketing", ["Mike", "Karen", "Jake", "Tasha"])) # Should be "Marketing: Mike, Karen, Jake, Tasha"
+print(group_list("Engineering", ["Kim", "Jay", "Tom"])) # Should be "Engineering: Kim, Jay, Tom"
+print(group_list("Users", "")) # Should be "Users:"
+----6----
+def guest_list(guests):
+	for ___:
+		___
+		print(___.format(___))
+
+guest_list([('Ken', 30, "Chef"), ("Pat", 35, 'Lawyer'), ('Amanda', 25, "Engineer")])
+
+#Click Run to submit code
+"""
+Output should match:
+Ken is 30 years old and works as Chef
+Pat is 35 years old and works as Lawyer
+Amanda is 25 years old and works as Engineer
+"""
+ans:
+def guest_list(guests):
+	for name, age, profession in guests:
+		print("{name} is {age} years old and works as {profession}".format(name=name, age=age, profession=profession))
+
+guest_list([('Ken', 30, "Chef"), ("Pat", 35, 'Lawyer'), ('Amanda', 25, "Engineer")])
+
+--dictinary----
+animals = { "bears":10, "lions":1, "tigers":2 } 
+ to add
+animal["monkey"]=5
+to update
+animal["bear"]=11
+to delete 
+del animal["bear"]
+Definition
+
+x = {key1:value1, key2:value2} 
+
+Operations
+
+len(dictionary) - Returns the number of items in the dictionary
+for key in dictionary - Iterates over each key in the dictionary
+for key, value in dictionary.items() - Iterates over each key,value pair in the dictionary
+if key in dictionary - Checks whether the key is in the dictionary
+dictionary[key] - Accesses the item with key key of the dictionary
+dictionary[key] = value - Sets the value associated with key
+del dictionary[key] - Removes the item with key key from the dictionary
+
+Methods
+dict.get(key, default) - Returns the element corresponding to key, or default if it's not present
+dict.keys() - Returns a sequence containing the keys in the dictionary
+dict.values() - Returns a sequence containing the values in the dictionary
+dict.update(other_dictionary) - Updates the dictionary with the items coming from the other dictionary. Existing entries will be replaced; new entries will be added.
+dict.clear() - Removes all the items of the dictionary
+
+--
+9561821401
+---week4--q1---
+def format_address(address_string):
+  # Declare variables
+    hnumber=address_string[0:address_string.index(" ")]
+    street=address_string[address_string.index(" ")+1:]
+    return "house number {} on street named {}".format(hnumber,street)
+----week4--q2---
+def highlight_word(sentence, word):
+	return(sentence.replace(word,word.upper()))
+---w4q4-----
+def squares(start, end):
+	return [x*x for x in range(start,end+1)]
+---w4q5-----
+def car_listing(car_prices):
+  result = ""
+  for c,p in car_prices.items():
+    result += "{} costs {} dollars".format(c,p) + "\n"
+  return result
+----w4q6----
+def combine_guests(guests1, guests2):
+    guests2.update(guests1)
+    return guests2
+----w4q7-----
+def count_letters(text):
+  result = {}
+  # Go through each letter in the text
+  
+  for letter in text:
+      if(letter.isalpha()):
+          if(letter.lower() not in result ):
+              result[letter.lower()]=0
+          result[letter.lower()]+=1
+
+  return result
+----module----
+>>> import random
+>>> random.randint(1,10)
+8
+>>> random.randint(1,10)
+>>> import datetime
+>>> now = datetime.datetime.now()
+>>> type(now)
+<class 'datetime.datetime'>
+>>> print(now)
+2019-04-24 16:54:55.155199
+>>> print(now)
+2019-04-24 16:54:55.155199
+>>> now.year
+2019
+>>> print(now + datetime.timedelta(days=28))
+2019-05-22 16:54:55.155199
++++++++listImp++++++++++++++++
+cloud = wordcloud.WordCloud()
+cloud.generate_from_frequencies(frequencies)
+cloud.to_file("myfile.jpg")
+/notebooks/C1M6L2_Final_Project_V3.ipynb
+C1M6L2_Final_Project_V3
+---
+Steps followed:
+1.executed 1st block
+2.clicked on save
+3.click on save and halt
+4.click on open and select(C1M6L2_Final_Project_V3.ipynb) to open
+5.run 2nd block code---> getting same error 
+
+repeated multiple times but getting same error 
+-----module2----
+https://automatetheboringstuff.com/
+https://docs.python-guide.org/
+https://docs.python.org/3/reference/index.html
+python.exe -m pip install --upgrade pip
+python -m pip install --upgrade pip
+pip install requests
+>>> import requests
+>>> response=requests.get("www.google.com")
+--to install PIL---
+sudo apt install python3-pil
+import PIL.image
+image=PIL.Image.opem("house.Jpg")
+print(image.size)
+print(image.format)
+--to install pip--
+sudo apt install python3-pip
+--install pandas--
+pip3 install pandas
+---mod in linux---
+chmod +x hello.py
+./ hello.py
+--disk usage--
+>>> import shutil
+>>> du=shutil.disk_usage("/")
+>>> print(du)
+usage(total=183842631680, used=122065317888, free=61777313792)
+---------------
+student-02-cf0ab68e9b9d@104.154.30.37
+student-02-cf0ab68e9b9d@34.123.79.158
+ save the file by clicking Ctrl-o, enter key and Ctrl-x.
+
+sudo apt install python3-requests
+nano network.py---> to create file 
+Add a shebang line to define where the interpreter is located. In this case, the shebang line would be /usr/bin/env python3.
+#!/usr/bin/env python3
+import requests
+import socket
+localhost = socket.gethostbyname('localhost')
+----lab1------
+
+#!/usr/bin/env python3
+from network import *
+import shutil
+import psutil
+def check_disk_usage(disk):
+    """Verifies that there's enough free space on disk"""
+    du = shutil.disk_usage(disk)
+    free = du.free / du.total * 100
+    return free > 20
+def check_cpu_usage():
+    """Verifies that there's enough unused CPU"""
+    usage = psutil.cpu_percent(1)
+    return usage < 75
+# If there's not enough disk, or not enough CPU, print an error
+if not check_disk_usage('/') or not check_cpu_usage():
+    print("ERROR!")
+else:
+    print("Everything ok")
+elif check_localhost() and check_connectivity():
+    print("Everything ok")
+else:
+    print("Network checks failed")
+-----w2---
+file=open("spider.txt")
+print(file.readline())
+print(file.read())
+with open("spider.txt") as file:---> no need to close
+file.close
+-----
+with open("hello_world.txt") as text:
+    for line in text:
+	    print(line.strip())
+--
+linelist=file.readline()
+---
+Character-- Meaning
+'r'--open for reading (default)
+'w'--open for writing, truncating the file first
+'x'--open for exclusive creation, failing if the file already exists
+'a'--open for writing, appending to the end of file if it exists
+'b'--binary mode
+'t'--text mode (default)
+'+'--open for updating (reading and writing)
+------
+import os
+file= "file.dat"
+if os.path.isfile(file):
+    print(os.path.isfile(file))
+    print(os.path.getsize(file))
+---
+import datetime
+timestamp=os.path.getmtime("spider.txt")
+datetime.datetime.fromtimestamp(timestamp)-->
+
+--imp---
+os.remove("novel.txt")
+os.rename("old.txt","new.txt")
+os.path.exists("tt.txt")
+with open('myfile.txt', 'w') as fp:---> create new empty file
+--imp Dir---
+print(os.getcwd())
+os.mkdir("new_dir")
+os.chdir("new_dir")
+os.rmdir("new_dir")
+for name in os.listdir(dir):
+    fulname=os.path.join(dir,name)
+    if os.path.isdir(fulname):
+       print("{} is a directory".format(fullname))
+    else:
+       print("{} is a file".format(fullname)) 
+---assement1-q1--
+def create_python_script(filename):
+  comments = "# Start of a new Python program"
+  with ___:
+    filesize = ___
+  return(filesize)
+
+print(create_python_script("program.py"))
+---sol--
+import os
+def create_python_script(filename):
+  comments="# Start of a new Python program"
+  with open(filename, 'w') as file:
+    file.write(comments)
+  filesize = os.path.getsize(filename)
+  return(filesize)
+
+print(create_python_script("program.py")
+---q2--
+import os
+
+def new_directory(directory, filename):
+  # Before creating a new directory, check to see if it already exists
+  if os.path.isdir(directory) == False:
+    ___
+
+  # Create the new file inside of the new directory
+  os.chdir(___)
+  with open (___) as file:
+    pass
+
+  # Return the list of files in the new directory
+  return ___
+
+print(new_directory("PythonPrograms", "script.py"))
+
+----sol---
+import os
+
+def new_directory(directory, filename):
+  # Before creating a new directory, check to see if it already exists
+  if os.path.isdir(directory) == False:
+    os.mkdir(directory)
+
+  # Create the new file inside of the new directory
+  os.chdir(directory)
+  with open (filename,'w') as file:
+    pass
+
+  # Return the list of files in the new directory
+  return file
+
+print(new_directory("PythonPrograms", "script.py"))
+----q3--
+import os
+import datetime
+
+def file_date(filename):
+  # Create the file in the current directory
+  ___
+  timestamp = ___
+  # Convert the timestamp into a readable format, then into a string
+  ___
+  # Return just the date portion 
+  # Hint: how many characters are in “yyyy-mm-dd”? 
+  return ("{___}".format(___))
+
+print(file_date("newfile.txt")) 
+# Should be today's date in the format of yyyy-mm-dd
+---sol---
+import os
+import datetime
+
+def file_date(filename):
+  # Create the file in the current directory
+  with open(filename, 'w') as file:
+    pass
+  timestamp = os.path.getmtime(filename)
+  # Convert the timestamp into a readable format, then into a string
+  current_time = str(datetime.datetime.fromtimestamp(timestamp))
+  # Return just the date portion 
+  # Hint: how many characters are in “yyyy-mm-dd”? 
+  return ("{}".format(current_time[:10]))
+
+print(file_date("newfile.txt")) 
+# Shojuld be today's date in the format of yyyy-mm-dd
+----q4--
+import os
+def parent_directory():
+  # Create a relative path to the parent 
+  # of the current working directory 
+  relative_parent = os.path.join(___, ___)
+
+  # Return the absolute path of the parent directory
+  return ___
+
+print(parent_directory())
+--sol--
+import os
+def parent_directory():
+  # Create a relative path to the parent
+  # of the current working directory
+  relative_parent = os.path.join('..', )
+  # Return the absolute path of the parent directory
+  return os.path.abspath(relative_parent)
+
+print(parent_directory())
+----csv---
+import csv
+f=open("csv_fle.txt")
+for row in f:
+ name,ph,role=row
+ print("name :{},phone:{},role:{}.format(name,ph,row)
+--writing--
+writer=csv.writer(csh_file)
+writer.writerows(host)
+users=[{"name":"amar","username":"lion,"department":"it"},
+	{"name":"jeet","username":"king","department":"home"}]
+keys=["name","username","department"]
+with open("by_dept.csv",'w') as by_dpt:
+writer=csv.DicWriter(by_dpt,fieldnames=keys)
+writer.writeheader()
+writer.writerows(user)
+---q1-----
+import os
+import csv
+
+# Create a file with data in it
+def create_file(filename):
+  with open(filename, "w") as file:
+    file.write("name,color,type\n")
+    file.write("carnation,pink,annual\n")
+    file.write("daffodil,yellow,perennial\n")
+    file.write("iris,blue,perennial\n")
+    file.write("poinsettia,red,perennial\n")
+    file.write("sunflower,yellow,annual\n")
+
+# Read the file contents and format the information about each row
+def contents_of_file(filename):
+  return_string = ""
+
+  # Call the function to create the file 
+  create_file(filename)
+
+  # Open the file
+  ___
+    # Read the rows of the file into a dictionary
+    ___
+    # Process each item of the dictionary
+    for ___:
+      return_string += "a {} {} is {}\n".format(row["color"], row["name"], row["type"])
+  return return_string
+
+#Call the function
+print(contents_of_file("flowers.csv"))
+--q1-sol-my-
+import os
+import csv
+
+# Create a file with data in it
+def create_file(filename):
+  with open(filename, "w") as file:
+    file.write("name,color,type\n")
+    file.write("carnation,pink,annual\n")
+    file.write("daffodil,yellow,perennial\n")
+    file.write("iris,blue,perennial\n")
+    file.write("poinsettia,red,perennial\n")
+    file.write("sunflower,yellow,annual\n")
+
+# Read the file contents and format the information about each row
+def contents_of_file(filename):
+  return_string = ""
+
+  # Call the function to create the file 
+  create_file(filename)
+
+  # Open the file
+  with open(filename) as f:
+    # Read the rows of the file into a dictionary
+    reader = csv.DictReader(f)
+    # Process each item of the dictionary
+    for row in reader:
+      return_string += "a {} {} is {}\n".format(row["color"], row["name"], row["type"])
+  return return_string
+
+#Call the function
+print(contents_of_file("flowers.csv"))
+---q2-mysol--
+import os
+import csv
+
+# Create a file with data in it
+def create_file(filename):
+  with open(filename, "w") as file:
+    file.write("name,color,type\n")
+    file.write("carnation,pink,annual\n")
+    file.write("daffodil,yellow,perennial\n")
+    file.write("iris,blue,perennial\n")
+    file.write("poinsettia,red,perennial\n")
+    file.write("sunflower,yellow,annual\n")
+
+# Read the file contents and format the information about each row
+def contents_of_file(filename):
+  return_string = ""
+
+  # Call the function to create the file 
+  create_file(filename)
+
+  # Open the file
+  with open(filename) as f:
+    # Read the rows of the file
+    rows =  csv.DictReader(f) #f.readline()
+    # Process each row
+    for row in rows:
+      name,color,type = row
+      # Format the return string for data rows only
+
+      return_string += "a {} {} is {}\n".format(row[name],row[color],row[type])
+  return return_string
+
+#Call the function
+print(contents_of_file("flowers.csv"))
+=regex====
+grep w.er filepath-->single any character
+grep -i w.er filepath-->single any character upper
+grep ^wer filepath--> startwith
+grep wer$ filepath--> Endwith
+print(re.search(r"[Pp]ython","Python")
+---prac1---
+import re
+def check_web_address(text):
+  pattern = r"[\w\+\.\-]\.[a-zA-Z]*$"
+  result = re.search(pattern, text)
+  return result != None
+
+print(check_web_address("gmail.com")) # True
+print(check_web_address("www@google")) # False
+print(check_web_address("www.Coursera.org")) # True
+print(check_web_address("web-address.com/homepage")) # False
+print(check_web_address("My_Favorite-Blog.US")) # True
+---2--
+  pattern = r'^[1-9][0-2]?:[0-5][0-9] ?[AM|PM|am|pm]'
+import re
+def check_time(text):
+  pattern = r"^[1-9][0-2]?:[0-5][0-9] ?[am|AM|pm|PM]"
+  #pattern = r'^[1-9][0-2]?:[0-5][0-9] ?[AM|PM|am|pm]'
+  result = re.search(pattern, text)
+  return result != None
+
+print(check_time("12:45pm")) # True
+print(check_time("9:59 AM")) # True
+print(check_time("6:60am")) # False
+print(check_time("five o'clock")) # False
+--3--
+import re
+def contains_acronym(text):
+  pattern = '\([A-Z0-9a-z]+\)' 
+  result = re.search(pattern, text)
+  return result != None
+
+print(contains_acronym("Instant messaging (IM) is a set of communication technologies used for text-based communication")) # True
+print(contains_acronym("American Standard Code for Information Interchange (ASCII) is a character encoding standard for electronic communication")) # True
+print(contains_acronym("Please do NOT enter without permission!")) # False
+print(contains_acronym("PostScript is a fourth-generation programming language (4GL)")) # True
+print(contains_acronym("Have fun using a self-contained underwater breathing apparatus (Scuba)!")) # True
+---4---
+import re
+def check_zip_code (text):
+  #result = re.search(r"[1-9][0-9]{4}|[1-9][0-9]{4}\-[0-9]{4}", text)
+  result = re.search(r"\s[0-9]{5}(-[0-9]{4})?", text)
+  return result != None
+
+print(check_zip_code("The zip codes for New York are 10001 thru 11104.")) # True
+print(check_zip_code("90210 is a TV show")) # False
+print(check_zip_code("Their address is: 123 Main Street, Anytown, AZ 85258-0001.")) # True
+print(check_zip_code("The Parliament of Canada is at 111 Wellington St, Ottawa, ON K1A0A9.")) # False
+--reg-group--
+result=re.search(r"^(\w*),(\w*)$","amar, jeet")
+print(result.groups())-->("amar, jeet")
+print(result[0])-->("amar, jeet")
+print(result[1])-->amar
+print(result[2])-->jeet
+--to find exact 5letter all words--
+print(re.findall(r"\b[a-zA-Z]{5}\b","a scary ghost appeared"))
+
+print(re.findall(r"\b[a-zA-Z]{5}\b","a scary ghost appeared")) #print word having 5 letter
+print(re.findall(r"\w{5,10}","a scary ghost appeared")) # print word range 5 to 10
+print(re.findall(r"\w{5,}","a scary ghost appeared")) # print word range 5 to ..
+
+--example--
+import re
+def extract_pid(log_line):
+    regex = r"\[(\d+)\]: (\w*)"
+    result = re.search(regex, log_line)
+    if result is None:
+        return None
+    return "{} ({})".format(result[1],result[2])
+
+print(extract_pid("July 31 07:51:48 mycomputer bad_process[12345]: ERROR Performing package upgrade")) # 12345 (ERROR)
+print(extract_pid("99 elephants in a [cage]")) # None
+print(extract_pid("A string that also has numbers [34567] but no uppercase message")) # None
+print(extract_pid("July 31 08:08:08 mycomputer new_process[67890]: RUNNING Performing backup")) # 67890 (RUNNING)
+
+--replace email add--
+re.sub(r"[\w.%+-]+@[\w.-]+","[Reacted]")
+re,sub(r"^([\w .-]*),([\w .-]*)$",r"\2\1","lovelace, Ada")"
+---q1----
+import re
+def transform_record(record):
+  new_record = re.sub(r"\b(\d-)*\b",r"+1-\1",record)
+  #new_record = re.sub(r"\b(\d{3}-\d{3}-?\d{4})\b",r"+1-\1",record)
+  return new_record
+
+print(transform_record("Sabrina Green,802-867-5309,System Administrator")) 
+# Sabrina Green,+1-802-867-5309,System Administrator
+
+print(transform_record("Eli Jones,684-3481127,IT specialist")) 
+# Eli Jones,+1-684-3481127,IT specialist
+
+print(transform_record("Melody Daniels,846-687-7436,Programmer")) 
+# Melody Daniels,+1-846-687-7436,Programmer
+
+print(transform_record("Charlie Rivera,698-746-3357,Web Developer")) 
+# Charlie Rivera,+1-698-746-3357,Web Developer
+---q2----
+import re
+def multi_vowel_words(text):
+  pattern = r"\w*[aeiou]{3}\w*"
+  result = re.findall(pattern, text)
+  return result
+
+print(multi_vowel_words("Life is beautiful")) 
+# ['beautiful']
+
+print(multi_vowel_words("Obviously, the queen is courageous and gracious.")) 
+# ['Obviously', 'queen', 'courageous', 'gracious']
+
+print(multi_vowel_words("The rambunctious children had to sit quietly and await their delicious dinner.")) 
+# ['rambunctious', 'quietly', 'delicious']
+
+print(multi_vowel_words("The order of a data queue is First In First Out (FIFO)")) 
+# ['queue']
+
+print(multi_vowel_words("Hello world!")) 
+# []
+---q3---
+import re
+def transform_comments(line_of_code):
+  result = re.sub(r"[#]+","//",line_of_code)
+  return result
+
+print(transform_comments("### Start of program")) 
+# Should be "// Start of program"
+print(transform_comments("  number = 0   ## Initialize the variable")) 
+# Should be "  number = 0   // Initialize the variable"
+print(transform_comments("  number += 1   # Increment the variable")) 
+# Should be "  number += 1   // Increment the variable"
+print(transform_comments("  return(number)")) 
+# Should be "  return(number)"
+---q4---
+import re
+def convert_phone_number(phone):
+  result = re.sub(r"(\d{3})-(\d{3})-(\d{4})",r"(\1) \2-\3",phone)
+  return result
+
+print(convert_phone_number("My number is 212-345-9999.")) # My number is (212) 345-9999.
+print(convert_phone_number("Please call 888-555-1234")) # Please call (888) 555-1234
+print(convert_phone_number("123-123-12345")) # 123-123-12345
+print(convert_phone_number("Phone number of Buckingham Palace is +44 303 123 7300")) # Phone number of Buckingham Palace is +44 303 123 7300
+
+--week4--
+Env
+echo $PATH
+print("HOME: "+os.environ.get("HOME",""))--to get environmental varialbe details
+export FRUIT=Pineapple---> to set env variable
+----
+result=subprocess.run(["host","8.8.8.8"],capture_output=True])
+print(result.returncode)-->0
+print(result.stdout.decode().split())
+--modify sys env---
+my_env=os.environ.copy()
+my_env["PATH"]=os.pathsep.join(["/opt/myapp/",my_env["PATH"]])
+result=subprocess.run(["myapp"],env=my_env)
+--leetcode--
+# to find count of word in longest sentence 
+def mostWordsFound(ss: list[str]) -> int:
+    return max(s.count(" ") for s in ss) + 1
+sss=['as dfg','sdf rty yt','dfgt tyu gfd','wert tyui hhh sss']
+print(mostWordsFound(sss))
+--qlab---
+student-02-cf0ab68e9b9d@35.225.219.68
+#!/usr/bin/env python3
+import sys
+import os
+import re
+def error_search(log_file):
+  error = input("What is the error? ")
+  returned_errors = []
+
+  with open(log_file, mode='r',encoding='UTF-8') as file:
+    for log in  file.readlines():
+      error_patterns = ["error"]
+      for i in range(len(error.split(' '))):
+        error_patterns.append(r"{}".format(error.split(' ')[i].lower()))
+      if all(re.search(error_pattern, log.lower()) for error_pattern in error_patterns):
+        returned_errors.append(log)
+    file.close()
+  return returned_errors
+def file_output(returned_errors):
+  with open(os.path.expanduser('~') + '/data/errors_found.log', 'w') as file:
+    for error in returned_errors:
+      file.write(error)
+    file.close()
+if __name__ == "__main__":
+  log_file = sys.argv[1]
+  returned_errors = error_search(log_file)
+  file_output(returned_errors)
+  sys.exit(0)
+---to run
+sudo chmod +x find_error.py
+
+	
+
+
+
